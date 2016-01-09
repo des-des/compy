@@ -16,6 +16,9 @@
           }
         ]
       }
+    },
+    "remoteComponent": {
+      "url" : "data/firstBlog.json"
     }
   },
   "title": "compy",
