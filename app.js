@@ -26,6 +26,16 @@ server.register(inert, err => {
     }
   });
 
+  server.route({
+    method: 'GET',
+    path: '/data/{param*}',
+    handler: {
+      directory: {
+        path: 'data',
+      }
+    }
+  });
+
   server.start((err) => {
     if (err) throw err;
 

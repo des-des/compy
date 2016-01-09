@@ -1,4 +1,25 @@
+if (typeof window !== "undefined") {
+  var getJSON = function(url, callback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = () => {
+      if (request.readyState === XMLHttpRequest.DONE) {
+        if (request.status === 200) callback(JSON.parse(request.responseText));
+      }
+    }
+    request.open('GET', url);
+    request.send();
+  };
+  var loadRemoteComponent = (url, id) => {
+    getJSON(url, data => {
+      document.getElementById(id).innerHTML =
+        compy.renderComponent("blogPost", data.blogPost);
+    });
+  }
+}
+
 var compy = (() => {
+
+  var createId = ((id) => () => id++)(0);
 
   var renderers = {
     header: headerData => `
@@ -15,7 +36,23 @@ var compy = (() => {
         ${buttonData.text}
       </button>
     `,
-    func: f => `"(${f.toString()})()"`
+    blogPost: blogPost => `
+      <h3> ${blogPost.title} </h3>
+      <p>  ${blogPost.text} </p>
+    `,
+    remoteComponent: remoteComponent => {
+      var id = "remoteComponent" + createId();
+      return `
+      <div id="${id}">
+      <script>
+        window.onload = function() {
+          loadRemoteComponent("${remoteComponent.url}", "${id}");
+        };
+      </script>
+      </div>
+      `;
+    }
+    // func: f => `"(${f.toString()})()"`
   };
 
   var createPage = (data) => {
