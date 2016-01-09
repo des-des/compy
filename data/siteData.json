@@ -1,0 +1,23 @@
+{
+  "components": {
+    "header": {
+      "components": {
+        "title": {
+          "text": "hello, world"
+        },
+        "linkList": [
+          {
+            "url": "http://github.com/des-des",
+            "text": "github"
+          },
+          {
+            "url": "https://twitter.com/desmond_eoin",
+            "text": "twitter"
+          }
+        ]
+      }
+    }
+  },
+  "title": "compy",
+  "style": "a {text-decoration: none}"
+}
