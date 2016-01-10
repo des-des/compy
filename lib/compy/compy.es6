@@ -148,54 +148,6 @@ var blogPost = (renderData) => compyArray(renderData, [title, textField]);
 
 var getData = id => data[Object.keys(data).filter(key => data[key].id === id)];
 
-var data = {
-  blog1: {
-    className: "blog",
-    editStatus : "editable",
-    id: createId(),
-    elems: ["blog1Title", "blog1Text"]
-  },
-  blog1Title: {
-    text: "hello world",
-    id: createId(),
-    editStatus : "none",
-  },
-  blog1Text: {
-    editStatus : "none",
-    className: "blogText",
-    text: "change me!",
-    id: createId(),
-  },
-  header: {
-    className: "header",
-    id : createId(),
-    editStatus : "editable",
-    elems: ["title", 'links']
-  },
-  title: {
-    id : createId(),
-    text : "change me",
-    editStatus : "none"
-  },
-  githubLink: {
-    id:createId(),
-    "url": "http://github.com/des-des",
-    "text": "github",
-    editStatus: "none"
-  },
-  twitterLink: {
-    id:createId(),
-    "url": "https://twitter.com/desmond_eoin",
-    "text": "twitter",
-    editStatus: "none"
-  },
-  links: {
-    id: createId(),
-    elems: ["twitterLink", "githubLink"],
-    editStatus: "none"
-  }
-};
-
 var actions = {
   edit: id => {
     getData(id).editStatus = "editing";
@@ -247,8 +199,20 @@ var title = (renderData) => `
   </h2>`;
 
 var renderPage = () => {
-  var html = header() + blogPost(data.blog1);
+  var html = header() + blogPost(data.blog1)+ `
+    <button onclick="saveData()">save</button>
+  `;
   document.getElementById('compy').innerHTML = html;
 };
 
-renderPage();
+var saveData = () => {
+  var req = new XMLHttpRequest();
+  req.open('POST', 'siteData');
+  req.send(JSON.stringify(data));
+}
+
+var data;
+getJSON('siteData', siteData => {
+  data = siteData;
+  renderPage();
+});

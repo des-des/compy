@@ -1,15 +1,9 @@
-var Fs = require('fs');
+var fs = require('fs');
 var Path = require('path')
 var Hapi = require('hapi');
 var inert = require('inert');
 
-// var compy = require('./lib/compy/compy.js');
-// var siteData = JSON.parse(Fs.readFileSync('./data/siteData.json'));
-
-// console.log(compy);
-//
-// var site = compy.createPage(siteData);
-// Fs.writeFileSync('public/index.html', site);
+var siteData = require('./data/siteData.js');
 
 var server = new Hapi.Server();
 server.connection({ port: 3000 });
@@ -35,6 +29,23 @@ server.register(inert, err => {
       directory: {
         path: 'data',
       }
+    }
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/siteData',
+    handler: function(request, reply) {
+      return reply(fs.readFileSync('data/siteData.json'));
+    }
+  });
+
+  server.route({
+    method: 'POST',
+    path: '/siteData',
+    handler: function(request, reply) {
+      fs.writeFile('data/siteData.json', request.payload);
+      return reply('data saved');
     }
   });
 
