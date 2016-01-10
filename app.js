@@ -3,11 +3,13 @@ var Path = require('path')
 var Hapi = require('hapi');
 var inert = require('inert');
 
-var compy = require('./public/compy.js');
-var siteData = JSON.parse(Fs.readFileSync('./data/siteData.json'));
+// var compy = require('./lib/compy/compy.js');
+// var siteData = JSON.parse(Fs.readFileSync('./data/siteData.json'));
 
-var site = compy.createPage(siteData);
-Fs.writeFileSync('public/index.html', site);
+// console.log(compy);
+//
+// var site = compy.createPage(siteData);
+// Fs.writeFileSync('public/index.html', site);
 
 var server = new Hapi.Server();
 server.connection({ port: 3000 });
